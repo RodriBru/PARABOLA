@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Herramienta educativa para aprender funciones cuadráticas paso a paso, con gráfico, explicaciones claras y opciones de lectura accesible.">
+  <title>Parábola Fácil · Funciones cuadráticas paso a paso</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido-principal">Saltar al contenido</a>
+
+  <header class="topbar">
+    <div class="brand" aria-label="Parábola Fácil">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64" role="img">
+          <path d="M12 14v40h40" />
+          <path d="M16 18c5 24 13 36 24 36s19-12 24-36" />
+          <circle cx="40" cy="54" r="4" />
+        </svg>
+      </div>
+      <div>
+        <p class="eyebrow">Matemática sin apuro</p>
+        <h1>Parábola Fácil</h1>
+      </div>
+    </div>
+
+    <button class="icon-button" id="btn-ajustes" type="button" aria-expanded="false" aria-controls="panel-ajustes">
+      <span aria-hidden="true">Aa</span>
+      <span>Ajustes de lectura</span>
+    </button>
+  </header>
+
+  <aside class="settings-panel" id="panel-ajustes" hidden aria-label="Ajustes de lectura">
+    <div class="settings-heading">
+      <div>
+        <p class="eyebrow">Personalizá la lectura</p>
+        <h2>Que estudiar no canse la vista</h2>
+      </div>
+      <button class="close-button" id="btn-cerrar-ajustes" type="button" aria-label="Cerrar ajustes">×</button>
+    </div>
+
+    <div class="settings-grid">
+      <label class="setting-control">
+        <span>Tamaño del texto</span>
+        <input id="ajuste-texto" type="range" min="0" max="2" value="1" step="1">
+        <small>Normal, grande o extra grande</small>
+      </label>
+
+      <label class="setting-control">
+        <span>Espaciado entre líneas</span>
+        <input id="ajuste-espaciado" type="range" min="0" max="2" value="1" step="1">
+        <small>Elegí el que resulte más cómodo</small>
+      </label>
+
+      <label class="setting-control">
+        <span>Fondo de lectura</span>
+        <select id="ajuste-tema">
+          <option value="crema">Crema suave</option>
+          <option value="celeste">Celeste suave</option>
+          <option value="blanco">Blanco</option>
+          <option value="oscuro">Oscuro</option>
+        </select>
+      </label>
+
+      <label class="toggle-control">
+        <input id="ajuste-regla" type="checkbox">
+        <span class="toggle-ui" aria-hidden="true"></span>
+        <span>
+          <strong>Regla de lectura</strong>
+          <small>Seguimiento visual con el cursor</small>
+        </span>
+      </label>
+
+      <label class="toggle-control">
+        <input id="ajuste-movimiento" type="checkbox">
+        <span class="toggle-ui" aria-hidden="true"></span>
+        <span>
+          <strong>Reducir animaciones</strong>
+          <small>Una interfaz todavía más tranquila</small>
+        </span>
+      </label>
+    </div>
+  </aside>
+
+  <div class="reading-ruler" id="regla-lectura" hidden aria-hidden="true"></div>
+
+  <nav class="main-nav" aria-label="Secciones principales">
+    <button class="nav-button active" type="button" data-view="resolver" aria-current="page">
+      <span aria-hidden="true">01</span>
+      Resolver función
+    </button>
+    <button class="nav-button" type="button" data-view="grafico">
+      <span aria-hidden="true">02</span>
+      Leer gráfico
+    </button>
+    <button class="nav-button" type="button" data-view="aprender">
+      <span aria-hidden="true">03</span>
+      Guía rápida
+    </button>
+    <button class="nav-button" type="button" data-view="practicar">
+      <span aria-hidden="true">04</span>
+      Practicar
+    </button>
+  </nav>
+
+  <main id="contenido-principal" tabindex="-1">
+    <section class="view active" id="view-resolver" data-view-panel="resolver">
+      <div class="hero-grid">
+        <article class="intro-card">
+          <div class="hero-tag-row">
+            <span class="status-pill">Paso 1</span>
+            <p class="eyebrow">Resolver sin perderse</p>
+          </div>
+          <h2>Escribí la función. Lo demás aparece ordenado.</h2>
+          <p class="lead">Primero cargás la expresión. Después la app muestra un resumen corto, un paso activo, el gráfico y el cuaderno completo para copiar.</p>
+
+          <div class="hero-proof" aria-label="Qué entrega la herramienta">
+            <span>Resumen claro</span>
+            <span>Pasos guiados</span>
+            <span>Gráfico listo para interpretar</span>
+          </div>
+
+          <form id="form-resolver" class="solver-form" novalidate>
+            <label for="input-funcion">Función cuadrática</label>
+            <div class="input-with-action">
+              <input id="input-funcion" name="funcion" type="text" value="-3x² + 5x - 8" autocomplete="off" spellcheck="false" aria-describedby="ayuda-funcion" placeholder="Ejemplo: -3x² + 5x - 8">
+              <button class="primary-button" type="submit">Empezar estudio</button>
+            </div>
+            <p id="ayuda-funcion" class="field-help">Acepta x², x^2 o x2. También podés escribir f(x)= antes. Ejemplo: f(x)=x²-16.</p>
+            <p class="form-error" id="error-funcion" role="alert" aria-live="assertive"></p>
+          </form>
+
+          <div class="quick-examples" aria-label="Ejemplos rápidos">
+            <span>Arrancar con:</span>
+            <button type="button" data-example="5x² + 7x - 18">5x² + 7x - 18</button>
+            <button type="button" data-example="x² - 16">x² - 16</button>
+            <button type="button" data-example="-6x² + 24x">-6x² + 24x</button>
+          </div>
+        </article>
+
+        <aside class="orientation-card start-card">
+          <div class="orientation-icon" aria-hidden="true">1 2 3</div>
+          <p class="eyebrow">Mapa de trabajo</p>
+          <h3>El orden que conviene seguir</h3>
+          <ol class="start-steps">
+            <li><strong>Identificar datos:</strong> a, b, c y apertura.</li>
+            <li><strong>Calcular claves:</strong> discriminante, raíces, eje y vértice.</li>
+            <li><strong>Interpretar:</strong> signo, crecimiento, imagen y gráfico.</li>
+          </ol>
+          <button class="secondary-button" id="btn-leer-intro" type="button">Escuchar esta explicación</button>
+        </aside>
+      </div>
+
+      <section class="onboarding-strip" aria-label="Camino recomendado">
+        <article>
+          <span>01</span>
+          <h3>Cargá la función</h3>
+          <p>Es lo único obligatorio para empezar. Si falta b o c, la app lo completa con cero.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Leé el resumen</h3>
+          <p>Primero ves los datos importantes: apertura, raíces, vértice y comportamiento.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Avanzá paso a paso</h3>
+          <p>Después podés abrir el cuaderno completo, copiarlo, imprimirlo o practicar otro.</p>
+        </article>
+      </section>
+
+      <section class="results-shell" id="zona-resultados" hidden aria-live="polite">
+        <div class="results-toolbar">
+          <div>
+            <p class="eyebrow">Resultado</p>
+            <h2 id="titulo-resultado">Estudio de f(x)</h2>
+          </div>
+          <div class="toolbar-actions">
+            <label class="format-control" for="formato-resultados">
+              <span>Formato</span>
+              <select id="formato-resultados">
+                <option value="exact">Exacto / fracciones</option>
+                <option value="decimal">Decimal</option>
+              </select>
+            </label>
+            <button class="ghost-button" id="btn-leer-resultado" type="button">Escuchar resumen</button>
+            <button class="ghost-button" id="btn-copiar" type="button">Copiar estudio</button>
+            <button class="ghost-button" id="btn-imprimir" type="button">Imprimir</button>
+          </div>
+        </div>
+
+        <div class="summary-grid" id="resumen-cards"></div>
+
+        <div class="workspace-grid">
+          <article class="guided-card">
+            <div class="card-heading">
+              <div>
+                <p class="eyebrow">Modo guiado</p>
+                <h3>Un paso por vez</h3>
+              </div>
+              <span class="step-counter" id="contador-pasos">Paso 1 de 1</span>
+            </div>
+            <div class="step-progress" id="progreso-pasos" aria-label="Progreso del estudio"></div>
+            <div id="paso-guiado"></div>
+            <div class="guided-actions">
+              <button class="secondary-button" id="btn-paso-anterior" type="button">← Anterior</button>
+              <button class="primary-button" id="btn-paso-siguiente" type="button">Siguiente →</button>
+            </div>
+          </article>
+
+          <article class="graph-card">
+            <div class="card-heading graph-heading">
+              <div>
+                <p class="eyebrow">Bosquejo gráfico</p>
+                <h3>La parábola dibujada</h3>
+              </div>
+              <div class="graph-controls" aria-label="Controles del gráfico">
+                <button type="button" id="btn-zoom-menos" aria-label="Alejar gráfico">−</button>
+                <button type="button" id="btn-zoom-reset" aria-label="Restablecer zoom">100%</button>
+                <button type="button" id="btn-zoom-mas" aria-label="Acercar gráfico">+</button>
+              </div>
+            </div>
+            <p class="muted">Los puntos importantes aparecen marcados para que puedas copiarlos al bosquejo hecho a mano.</p>
+            <div class="graph-wrap">
+              <svg id="grafico-svg" viewBox="0 0 760 500" role="img" aria-labelledby="grafico-titulo grafico-descripcion">
+                <title id="grafico-titulo">Gráfico de la función cuadrática</title>
+                <desc id="grafico-descripcion">Representación cartesiana de la parábola con vértice, raíces reales y corte con el eje y.</desc>
+              </svg>
+            </div>
+            <div class="graph-legend" id="leyenda-grafico"></div>
+          </article>
+        </div>
+
+        <article class="study-card">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">Cuaderno completo</p>
+              <h3>Todos los pasos explicados</h3>
+            </div>
+            <button class="secondary-button" id="btn-abrir-pasos" type="button">Abrir todos</button>
+          </div>
+          <div class="steps-list" id="lista-pasos"></div>
+        </article>
+
+        <article class="table-card">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">Ayuda para dibujar</p>
+              <h3>Tabla de valores simétrica</h3>
+            </div>
+          </div>
+          <p class="muted">Tomamos valores a la misma distancia del eje de simetría. Por eso los resultados se repiten de forma ordenada.</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">x</th>
+                  <th scope="col">f(x)</th>
+                  <th scope="col">Qué representa</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-valores"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </section>
+
+    <section class="view" id="view-grafico" data-view-panel="grafico" hidden>
+      <div class="section-heading">
+        <p class="eyebrow">Cuando te dan una gráfica</p>
+        <h2>Reconstruí la función con los datos que ves</h2>
+        <p class="lead">No hace falta adivinar. Elegí el tipo de información que pudiste leer del gráfico y completá solamente esos datos.</p>
+      </div>
+
+      <div class="rebuild-grid">
+        <article class="study-card">
+          <form id="form-reconstruir" class="rebuild-form" novalidate>
+            <label for="metodo-reconstruccion">¿Qué datos reconocés con más claridad?</label>
+            <select id="metodo-reconstruccion">
+              <option value="raices">Las dos raíces y otro punto</option>
+              <option value="vertice">El vértice y otro punto</option>
+            </select>
+
+            <div id="campos-raices" class="field-grid">
+              <label>
+                <span>Raíz izquierda</span>
+                <input id="raiz-uno" type="number" step="any" value="-2">
+              </label>
+              <label>
+                <span>Raíz derecha</span>
+                <input id="raiz-dos" type="number" step="any" value="0">
+              </label>
+              <label>
+                <span>x de otro punto</span>
+                <input id="punto-x-raices" type="number" step="any" value="-1">
+              </label>
+              <label>
+                <span>y de ese punto</span>
+                <input id="punto-y-raices" type="number" step="any" value="-4">
+              </label>
+            </div>
+
+            <div id="campos-vertice" class="field-grid" hidden>
+              <label>
+                <span>x del vértice</span>
+                <input id="vertice-h" type="number" step="any" value="-1">
+              </label>
+              <label>
+                <span>y del vértice</span>
+                <input id="vertice-k" type="number" step="any" value="-4">
+              </label>
+              <label>
+                <span>x de otro punto</span>
+                <input id="punto-x-vertice" type="number" step="any" value="0">
+              </label>
+              <label>
+                <span>y de ese punto</span>
+                <input id="punto-y-vertice" type="number" step="any" value="0">
+              </label>
+            </div>
+
+            <p class="form-error" id="error-reconstruccion" role="alert"></p>
+            <button class="primary-button" type="submit">Reconstruir y estudiar</button>
+          </form>
+        </article>
+
+        <aside class="orientation-card checklist-card">
+          <p class="eyebrow">Lista para mirar el gráfico</p>
+          <h3>Buscá estas pistas</h3>
+          <ol>
+            <li><strong>Apertura:</strong> ¿sube como una U o baja como un arco?</li>
+            <li><strong>Raíces:</strong> ¿en qué valores toca o cruza el eje x?</li>
+            <li><strong>Vértice:</strong> ¿cuál es el punto más alto o más bajo?</li>
+            <li><strong>Corte en y:</strong> ¿por dónde cruza el eje vertical?</li>
+          </ol>
+        </aside>
+      </div>
+
+      <article class="study-card" id="resultado-reconstruccion" hidden>
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow">Función reconstruida</p>
+            <h3 id="formula-reconstruida"></h3>
+          </div>
+          <button class="primary-button" id="btn-estudiar-reconstruida" type="button">Ver estudio completo</button>
+        </div>
+        <div id="pasos-reconstruccion" class="rebuild-explanation"></div>
+      </article>
+    </section>
+
+    <section class="view" id="view-aprender" data-view-panel="aprender" hidden>
+      <div class="section-heading">
+        <p class="eyebrow">Mini guía</p>
+        <h2>Entender primero. Memorizar después.</h2>
+        <p class="lead">Una función cuadrática tiene forma de parábola. Todo el estudio sale de tres números: <strong>a</strong>, <strong>b</strong> y <strong>c</strong>.</p>
+      </div>
+
+      <div class="learning-grid">
+        <article class="learning-card accent-a">
+          <span class="learning-badge">a</span>
+          <h3>Marca la apertura</h3>
+          <p>Si <strong>a</strong> es positivo, la parábola abre hacia arriba. Si es negativo, abre hacia abajo.</p>
+        </article>
+        <article class="learning-card accent-b">
+          <span class="learning-badge">b</span>
+          <h3>Ayuda a mover el vértice</h3>
+          <p>Lo usamos junto con <strong>a</strong> para calcular el eje de simetría: x = −b ÷ 2a.</p>
+        </article>
+        <article class="learning-card accent-c">
+          <span class="learning-badge">c</span>
+          <h3>Es el corte con el eje y</h3>
+          <p>Cuando x vale 0, todos los términos con x desaparecen. Entonces queda f(0) = c.</p>
+        </article>
+      </div>
+
+      <article class="study-card learning-long-card">
+        <p class="eyebrow">Orden recomendado</p>
+        <h3>Checklist para cualquier ejercicio</h3>
+        <ol class="roadmap-list">
+          <li><span>1</span><div><strong>Separá a, b y c.</strong><p>Completá con cero cuando falte algún término.</p></div></li>
+          <li><span>2</span><div><strong>Mirá la apertura.</strong><p>El signo de a ya cuenta parte de la historia.</p></div></li>
+          <li><span>3</span><div><strong>Calculá Δ.</strong><p>El discriminante indica cuántas raíces reales existen.</p></div></li>
+          <li><span>4</span><div><strong>Encontrá raíces y vértice.</strong><p>Son los puntos clave para ubicar la parábola.</p></div></li>
+          <li><span>5</span><div><strong>Completá el estudio.</strong><p>Eje, crecimiento, decrecimiento, signo, dominio e imagen.</p></div></li>
+          <li><span>6</span><div><strong>Dibujá y verificá.</strong><p>El gráfico debe coincidir con los cálculos.</p></div></li>
+        </ol>
+      </article>
+
+      <article class="study-card glossary-card">
+        <p class="eyebrow">Diccionario rápido</p>
+        <h3>Palabras que aparecen en la prueba</h3>
+        <div class="glossary-grid">
+          <div><strong>Raíz</strong><p>Valor de x donde la gráfica toca o cruza el eje horizontal.</p></div>
+          <div><strong>Vértice</strong><p>Punto más alto o más bajo de la parábola.</p></div>
+          <div><strong>Eje de simetría</strong><p>Línea vertical que divide la parábola en dos mitades iguales.</p></div>
+          <div><strong>Imagen</strong><p>Conjunto de valores que puede tomar y.</p></div>
+          <div><strong>Dominio</strong><p>Valores de x permitidos. En estas funciones: todos los números reales.</p></div>
+          <div><strong>Discriminante</strong><p>El cálculo Δ = b² − 4ac. Nos dice cuántas raíces reales hay.</p></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="view" id="view-practicar" data-view-panel="practicar" hidden>
+      <div class="section-heading">
+        <p class="eyebrow">Práctica acompañada</p>
+        <h2>Ejercicios parecidos a la guía</h2>
+        <p class="lead">Elegí uno, pensalo unos minutos y después comprobá el estudio completo. Sin castigo por equivocarse: acá se viene a probar.</p>
+      </div>
+
+      <article class="study-card practice-generator">
+        <div>
+          <p class="eyebrow">Generador</p>
+          <h3 id="ejercicio-actual">f(x) = x² − 16</h3>
+          <p id="pista-ejercicio">Pista: primero buscá a, b y c.</p>
+        </div>
+        <div class="practice-actions">
+          <label>
+            <span>Nivel</span>
+            <select id="nivel-practica">
+              <option value="1">Nivel 1 · Términos simples</option>
+              <option value="2">Nivel 2 · Tres términos</option>
+              <option value="3">Nivel 3 · Puede no tener raíces reales</option>
+            </select>
+          </label>
+          <button class="secondary-button" id="btn-nuevo-ejercicio" type="button">Nuevo ejercicio</button>
+          <button class="primary-button" id="btn-resolver-ejercicio" type="button">Comprobar paso a paso</button>
+        </div>
+      </article>
+
+      <article class="study-card">
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow">Guía del liceo</p>
+            <h3>Ejercicios de la foto</h3>
+          </div>
+        </div>
+        <div class="worksheet-grid" id="lista-guia"></div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Parábola Fácil</strong> · Hecho para estudiar a tu ritmo.</p>
+    <p>Funciona directamente desde el navegador y guarda tus preferencias de lectura en este dispositivo.</p>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
